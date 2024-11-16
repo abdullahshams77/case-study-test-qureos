@@ -27,9 +27,6 @@ export class Habit {
   @Prop({ default: 0 })
   priority: Number;
 
-  @Prop({ default: 0 })
-  longestStreak: Number;
-
   @Prop({
     type: [
       {

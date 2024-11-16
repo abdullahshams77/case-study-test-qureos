@@ -42,11 +42,11 @@ export class HabitController {
   async archiveHabit(@Param("id") id: Types.ObjectId) {
     return this.habitService.archiveHabit(id);
   }
-  @Post(":id/track")
-  async trackHabit(
+  @Post(":id/completeHabitForDay")
+  async completeHabitForDay(
     @Param("id") id: Types.ObjectId,
-    @Body() trackHabitDto: RequestDto<track_habit_dto>
+    @Body() requestDto: RequestDto<{}>
   ) {
-    return;
+    return this.habitService.completeHabitForDay(id,requestDto);
   }
 }

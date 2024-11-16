@@ -7,6 +7,7 @@ import { habit_filter_dto } from "src/common/dtos/request.dtos/habit_filter_dto"
 import { update_habit_dto } from "src/common/dtos/request.dtos/update_habit_dto";
 import { RespDto } from "src/common/dtos/resp.dto";
 import { Habit, HabitDocument } from "src/schemas/habit.schema";
+import { GeneralException } from "src/util/general.exception";
 
 @Injectable()
 export class HabitService {
@@ -22,6 +23,54 @@ export class HabitService {
     });
     const newHabit = await habit.save();
     const respnse = new RespDto(newHabit);
+    return respnse;
+  }
+
+  calculateCurrentStreak(tracking: { date: Date; completed: boolean }[]): number {
+    if (!tracking || tracking.length === 0) {
+      return 0;
+    }
+    let streak = 0;
+    let currentDate = new Date();
+    for (let i = tracking.length - 1; i >= 0; i--) {
+      const track = tracking[i];
+      const trackingDate = new Date(track.date);
+      const dayDifference = Math.floor((currentDate.getTime() - trackingDate.getTime()) / (1000 * 3600 * 24));
+      if (dayDifference === 0 || dayDifference === 1) {
+        streak++;
+        currentDate = trackingDate;
+      } else if (dayDifference > 1) {
+        break;
+      }
+    }
+    return streak;
+  }
+
+  async completeHabitForDay(id: Types.ObjectId, requestDto: RequestDto<{}>) {
+    // Find the habit by userId and habitId
+    const habit = await this.habitModel.findOne({
+      userId: requestDto.user?._id,
+      _id: id,
+    });
+    if (!habit) {
+      throw new GeneralException("Habit not found");
+    }
+    const today = new Date();
+    const existingTracking =
+      habit.tracking &&
+      habit.tracking.find(
+        (track) => track.date.toDateString() === today.toDateString()
+      );
+
+    if (existingTracking) {
+      throw new GeneralException("Habit already completed for the day");
+    }
+    habit.tracking.push({ date: today, completed: true });
+    habit.streak = this.calculateCurrentStreak(habit.tracking);
+    await habit.save();
+    const respnse = new RespDto({
+      status: "Habit Completed for day",
+    });
     return respnse;
   }
 
