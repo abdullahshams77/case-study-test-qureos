@@ -170,15 +170,8 @@ const apiMiddleware =
         });
       });
       let headers = {};
-      const deviceSerial = getCookie("deviceSerial"); // => 'value'
-      if (!deviceSerial) {
-      
-      } else {
-      
-      }
-      const accessToken = getCookie("access_token");
-      if(accessToken) {
-        headers = { ...headers, "authorization": `Bearer ${accessToken}` };
+      if(window.localStorage.getItem("userid")) {
+        headers = { ...headers, "userid": `${window.localStorage.getItem("userid")}` };
       }
       const resAxios = axios({
         //...options,
@@ -197,14 +190,6 @@ const apiMiddleware =
           if (response && response.error) {
             if (response.code == 401) {
               
-              // dispatch({
-              //   type: "NAVIGATE",
-              //   payload: {
-              //     data: {
-              //       redirectUrl: "/your url",
-              //     },
-              //   },
-              // });
             } else {
               dispatch({
                 type: `${action.type}_ERROR`,

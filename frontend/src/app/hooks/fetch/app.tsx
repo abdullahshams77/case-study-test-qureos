@@ -4,26 +4,21 @@ import { fromJS } from "immutable";
 import { useRefToastContext } from "@/app/toast.wrapper";
 import { useGlobalLoading } from "@/app/_components/global.loading.provider";
 
-export function useSystemConfig(params: any = {}) {
+export function useHabitList(params: any = {}) {
+  let key = useKey(`habits`, params);
   const { isPageLoaded } = useGlobalLoading(); // Use global loading state
-  const key = useKey(`v1/system-config`, params);
   const appToastRef = useRefToastContext();
   //appToastRef.current?.show({ severity: 'error', summary: '', detail: 'test', life: 3000 });
   const { data, error, isLoading, mutate } = useSWR<any>(
-    isPageLoaded ? key : null,
+    (isPageLoaded ? key : null),
     (url: any) =>
       fetcher2(url, {
         ...params,
         appToastRef,
         method: "GET",
-        type: "GET_SYSTEM_CONFIG",
+        type: "GET_HABITS",
       }),
-    {
-      refreshInterval: 0,
-      revalidateIfStale: false,
-      //revalidateOnMount: false, // Do not revalidate data on component mount
-      revalidateOnFocus: false, // Do not revalidate data on component focus
-    }
+    {}
   );
   return {
     mutate,
@@ -32,5 +27,4 @@ export function useSystemConfig(params: any = {}) {
     error,
   };
 }
-
 
