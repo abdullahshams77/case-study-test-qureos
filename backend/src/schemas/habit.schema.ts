@@ -12,6 +12,9 @@ export class Habit {
   @Prop({ required: true })
   title: string;
 
+  @Prop({ required: true })
+  goal: string;
+
   @Prop()
   details: string;
 
@@ -20,6 +23,9 @@ export class Habit {
 
   @Prop({ default: 0 })
   streak: Number;
+
+  @Prop({ default: 0 })
+  priority: Number;
 
   @Prop({ default: 0 })
   longestStreak: Number;
