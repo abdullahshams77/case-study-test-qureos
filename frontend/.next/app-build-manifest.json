@@ -1,0 +1,29 @@
+{
+  "pages": {
+    "/layout": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/css/css-node_modules_primeicons_primeicons_css-node_modules_next_font_google_target_css.css",
+      "static/css/css-node_modules_primeflex_primeflex_css.css",
+      "static/css/css-src_app_theme_css.css",
+      "static/css/css-src_app_globals_css.css",
+      "static/chunks/app/layout.js"
+    ],
+    "/loading": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/css/css-src_components_common_app_spinner_app_spinner_module_css.css",
+      "static/chunks/app/loading.js"
+    ],
+    "/((public))/page": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/chunks/app/((public))/page.js"
+    ],
+    "/((public))/layout": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/chunks/app/((public))/layout.js"
+    ]
+  }
+}

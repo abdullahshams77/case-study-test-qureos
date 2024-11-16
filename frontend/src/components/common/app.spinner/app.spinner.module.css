@@ -1,0 +1,20 @@
+/* ProgressSpinner.css */
+.customProgressSpinner {
+    animation: colorChange 3s linear infinite;
+  }
+  
+  @keyframes colorChange {
+    0% {
+      stroke: #0077ba;
+    }
+    33% {
+      stroke: #e81d7f;
+    }
+    66% {
+      stroke: #ea12d8;
+    }
+    100% {
+      stroke: #0077ba; /*#0000FF*/
+    }
+  }
+  
