@@ -12,7 +12,6 @@ export class RequestResponseInterceptor implements NestInterceptor {
   //INTERCEPTOR_CHANGES
   intercept(context: ExecutionContext, handle: CallHandler) {
     const request = context.switchToHttp().getRequest();
-    console.log('I am interceptor');
     const routeConfig =
       ALL_APP_ROUTES_CONFIG &&
       ALL_APP_ROUTES_CONFIG.find(
@@ -38,6 +37,7 @@ export class RequestResponseInterceptor implements NestInterceptor {
                 },
               );
             requestDto.headers = request.headers;
+            requestDto.user = request.body['user'];
             requestDto.requestCompleteUrl = request.body['requestCompleteUrl'];
             request.body = requestDto;
           })

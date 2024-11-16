@@ -12,6 +12,10 @@ export class UsersService {
     const user = await this.userModel.findOne({ email: email });
     return user;
   }
+  async getUserById(id: string): Promise<any> {
+    const user = await this.userModel.findOne({ _id: id });
+    return user;
+  }
   constructor(@InjectModel(User.name) private userModel: Model<UserDocument>) {}
 
   async createUser(createUserDto: RequestDto<create_user_dto>) {
