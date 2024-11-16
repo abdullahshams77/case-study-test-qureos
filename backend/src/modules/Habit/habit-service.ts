@@ -26,6 +26,13 @@ export class HabitService {
     return respnse;
   }
 
+  calculateDayDifference(date1: Date, date2: Date): number {
+    const normalizedDate1 = new Date(date1.getFullYear(), date1.getMonth(), date1.getDate());
+    const normalizedDate2 = new Date(date2.getFullYear(), date2.getMonth(), date2.getDate());
+    
+    return Math.floor((normalizedDate1.getTime() - normalizedDate2.getTime()) / (1000 * 3600 * 24));
+  }
+
   calculateCurrentStreak(tracking: { date: Date; completed: boolean }[]): number {
     if (!tracking || tracking.length === 0) {
       return 0;
@@ -35,7 +42,7 @@ export class HabitService {
     for (let i = tracking.length - 1; i >= 0; i--) {
       const track = tracking[i];
       const trackingDate = new Date(track.date);
-      const dayDifference = Math.floor((currentDate.getTime() - trackingDate.getTime()) / (1000 * 3600 * 24));
+      const dayDifference = this.calculateDayDifference(currentDate,trackingDate)
       if (dayDifference === 0 || dayDifference === 1) {
         streak++;
         currentDate = trackingDate;
