@@ -13,5 +13,10 @@ export const ALL_APP_ROUTES_CONFIG = [
     url: '/api/habits',
     refClass: 'habit_filter_dto',
     method: 'GET'
+  },
+  {
+    url: '/api/habits/:id',
+    refClass: 'update_habit_dto',
+    method: 'PUT'
   }
 ];

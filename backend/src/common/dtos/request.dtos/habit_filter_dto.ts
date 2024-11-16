@@ -7,6 +7,7 @@ import {
   IsEnum,
 } from "class-validator";
 import { HabitPriority } from "../enums";
+import { Transform } from "class-transformer";
 
 export enum SortOrder {
   Ascending = "asc",
@@ -16,6 +17,7 @@ export enum SortOrder {
 export class habit_filter_dto {
   @IsOptional()
   @IsBoolean()
+  @Transform(({ value }) => value === "true" || value === true ? true : false)
   isArchived?: boolean;
 
   @IsOptional()
