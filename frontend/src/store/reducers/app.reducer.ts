@@ -89,6 +89,10 @@ export const appReducer = createReducer(initialState, (builder) => {
         return filteredMessages;
       });
     })
+    .addCase("CREATE_USER_SUCCESS", (state: any, action: any) => {
+        window.localStorage.setItem("userid",action?.payload?.response?.data?._id);
+        return state;
+    })
     // You can apply a "matcher function" to incoming actions
     // and provide a default case if no other handlers matched
     .addDefaultCase((state, action) => {

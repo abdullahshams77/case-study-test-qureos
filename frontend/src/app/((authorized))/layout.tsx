@@ -1,8 +1,8 @@
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Case Study Start Page",
-  description: "Case Study Start Page",
+  title: "Case Study",
+  description: "Case Study",
 };
 
 export default function Layout({

@@ -68,6 +68,16 @@ const appAfterMiddleware =
         })
       );
     }
+    if(action.type == "CREATE_USER_SUCCESS") {
+      dispatch({
+        type: "NAVIGATE",
+        payload: {
+          data: {
+            redirectUrl: "/home",
+          },
+        },
+      });
+    }
     return next(action);
   };
 export default appAfterMiddleware;

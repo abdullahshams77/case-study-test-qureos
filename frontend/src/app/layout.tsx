@@ -33,13 +33,7 @@ export default function RootLayout({
         sizes="180x180"
         href="../../../assets/images/favicon.ico"
       /> */}
-      <link rel="icon" href="../../../assets/images/pp-icon.ico" />
-      <link
-        rel="apple"
-        sizes="180x180"
-        href="../../../assets/images/pp-icon.ico"
-      />
-      <body className={inter.className}>
+      <body className={"pl-7 pr-7 mt-4 mb-5"+inter.className}>
         <RefToastProvider>
           <SWRProviderWrapper>
             <PrimeReactProvider>
