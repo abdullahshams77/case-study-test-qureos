@@ -98,6 +98,7 @@ export default function HomePage() {
     <main>
       <GridTemplate>
         <AppBox
+          backgroundColor="#f6fff1"
           onClick={onAddNewHabit}
           description="Add new habit"
           heading={"Click here"}
