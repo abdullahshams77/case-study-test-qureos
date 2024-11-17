@@ -59,6 +59,12 @@ export const habitPriorities = [
   { label: "High", value: "2" },
 ];
 
+export const sortOptions = [
+  { label: "Date", value: "creationDate" },
+  { label: "Streak", value: "streak" },
+  { label: "Priority", value: "priority" },
+];
+
 export function calculateDayDifference(date1: Date, date2: Date): number {
   const normalizedDate1 = new Date(date1.getFullYear(), date1.getMonth(), date1.getDate());
   const normalizedDate2 = new Date(date2.getFullYear(), date2.getMonth(), date2.getDate());
