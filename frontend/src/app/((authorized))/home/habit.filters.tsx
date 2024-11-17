@@ -1,6 +1,6 @@
 import AppDropdown from "@/components/common/app.dropdown/app.dropdown";
 import AppLoaderButton from "@/components/common/app.loader.button/app.loader.button";
-import { sortOptions } from "@/components/common/util/util";
+import { durationOptions, getSubtractedDate, sortOptions } from "@/components/common/util/util";
 import { Button } from "primereact/button";
 import { InputText } from "primereact/inputtext";
 import { useState } from "react";
@@ -8,17 +8,34 @@ import { useState } from "react";
 export default function HabitFilters(props: any) {
   const [state, setState] = useState({
     title: "",
-    sortBy: ""
+    sortBy: "creationDate",
+    duration: "-1"
   });
   const onChange = (e: any) => {
     setState({ ...state, title: e?.target?.value });
   };
   const onSearch = () => {
-    props.onSearch(state);
+    if(state.duration == "pastWeek") {
+        props.onSearch({
+            title: state.title,
+            sortBy:  state.sortBy,
+            creationDateFrom: getSubtractedDate(7)
+        });
+    }
+    else {
+        props.onSearch({
+            title: state.title,
+            sortBy:  state.sortBy
+        });
+    }
+   
   };
   const setSortBy = (value: any) => {
     setState({ ...state, sortBy: value });
   };
+  const setDuration = (value:any) => {
+      setState({ ...state, duration: value });
+  }
   return (
     <div
       className="pl-3 pr-3"
@@ -44,16 +61,29 @@ export default function HabitFilters(props: any) {
             </div>
           </div>
         </div>
-        <div className="w-4 p-1 pl-2">
-          <label className="block font-medium text-900 text-xs mb-1">
-            Sort By
-          </label>
-          <AppDropdown
-            value={state.sortBy}
-            options={sortOptions}
-            onChange={(e: any) => setSortBy(e.value)}
-            placeholder="Sort By"
-          />
+        <div className="flex">
+          <div className="w-4 p-1 pl-2">
+            <label className="block font-medium text-900 text-xs mb-1">
+              Sort By
+            </label>
+            <AppDropdown
+              value={state.sortBy}
+              options={sortOptions}
+              onChange={(e: any) => setSortBy(e.value)}
+              placeholder="Sort By"
+            />
+          </div>
+          <div className="w-4 p-1 pr-2">
+            <label className="block font-medium text-900 text-xs mb-1">
+              Duration
+            </label>
+            <AppDropdown
+              value={state.duration}
+              options={durationOptions}
+              onChange={(e: any) => setDuration(e.value)}
+              placeholder="Duration"
+            />
+          </div>
         </div>
       </div>
       <div className="flex justify-content-end align-items-end">

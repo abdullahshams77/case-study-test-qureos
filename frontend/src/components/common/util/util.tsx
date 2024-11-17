@@ -65,6 +65,20 @@ export const sortOptions = [
   { label: "Priority", value: "priority" },
 ];
 
+export const durationOptions = [
+  { label: "All", value: "-1" },
+  { label: "Past Week", value: "pastWeek" },
+];
+export function getSubtractedDate(daysToSubtract:any) {
+  const currentDate = new Date();
+  currentDate.setDate(currentDate.getDate() - daysToSubtract);
+
+  const year = currentDate.getFullYear();
+  const month = String(currentDate.getMonth() + 1).padStart(2, '0'); // Months are 0-based
+  const day = String(currentDate.getDate()).padStart(2, '0');
+
+  return `${year}-${month}-${day}`;
+}
 export function calculateDayDifference(date1: Date, date2: Date): number {
   const normalizedDate1 = new Date(date1.getFullYear(), date1.getMonth(), date1.getDate());
   const normalizedDate2 = new Date(date2.getFullYear(), date2.getMonth(), date2.getDate());
