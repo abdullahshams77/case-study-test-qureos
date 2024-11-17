@@ -14,10 +14,10 @@ const AppDialog: React.FC<AppDialogProps> = (props) => {
         <Dialog
             header={header}
             visible={visible}
-            modal={modal}
+            modal={true}
             onHide={props.onHide}
             style={style}
-            contentStyle={{ overflowY: 'auto', maxHeight: '80vh' }}
+            contentStyle={{ minHeight: '70vh', minWidth: '500px', overflowY: 'auto', maxHeight: '80vh' }}
             className={className}
             footer={footer}
             closable={closable}

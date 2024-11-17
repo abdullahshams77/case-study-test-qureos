@@ -5,6 +5,7 @@ const AppBox = (props: any) => {
   
     return (
       <div
+        onClick={props.onClick}
         className="cursor-pointer border-round-lg border-1 border-200 surface-0 shadow-1 p-4 md:p-3 sm:p-2"
         style={{ borderRadius: "14px" }}
       >

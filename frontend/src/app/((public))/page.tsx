@@ -35,7 +35,7 @@ export default function Start() {
             className="w-full"
           />
           <div className="mt-5">
-            <AppLoaderButton onClick={onCreateUser} actionType={"CREATE_USER"} label="Continue" />
+            <AppLoaderButton onClick={onCreateUser} actionType={"ADD_NEW_HABIT"} label="Continue" />
           </div>
         </div>
       </div>

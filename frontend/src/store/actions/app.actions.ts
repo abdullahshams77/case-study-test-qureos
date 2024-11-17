@@ -16,6 +16,15 @@ export const createUser = createAction('CREATE_USER', (data: any = {},additional
     }
 }));
 
+export const addNewHabit = createAction('ADD_NEW_HABIT', (data: any = {},additionalData:any = {}) => ({
+    payload: {
+        data: data,
+        additionalData: {...additionalData, successMessage: "Habit added successfully"},
+        url: 'habits',
+        method: 'POST'
+    }
+}));
+
 export const clearAppAlertMessage = createAction('CLEAR_APP_ALERT_MESSAGE', (data: any = {}, additionalData: any = {}) => ({
     payload: {
         data: data,
