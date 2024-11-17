@@ -36,6 +36,18 @@ export default function HomePage() {
         action.get("actionType") == "UPDATE_HABIT"
     );
 
+  const actionArchive: any =
+    appLoaderState &&
+    appLoaderState.find(
+      (action: any) =>
+        action.get("actionType") == "ARCHIVE_HABIT" ||
+        action.get("actionType") == "COMPLETE_HABIT"
+    );
+  const actionComplete: any =
+    appLoaderState &&
+    appLoaderState.find(
+      (action: any) => action.get("actionType") == "COMPLETE_HABIT"
+    );
   useEffect(() => {
     if (action && action.get("status") === "DONE") {
       hideHabitDialog();
@@ -48,6 +60,7 @@ export default function HomePage() {
   };
   const archiveTheHabit = (e: any, habit: any) => {
     e.stopPropagation();
+    setSelectedHabit(habit);
     dispatch(
       archiveHabit(
         {},
@@ -66,6 +79,7 @@ export default function HomePage() {
   };
   const completeTheHabit = (e: any, habit: any) => {
     e.stopPropagation();
+    setSelectedHabit(habit);
     dispatch(
       completeHabit(
         {},
@@ -82,17 +96,20 @@ export default function HomePage() {
       )
     );
   };
-  const isHabitDisabled = (habit:any) => {
+  const isHabitDisabled = (habit: any) => {
     let disabled = false;
-    for (const track of habit.get('tracking')) {
-      const dayDifference = calculateDayDifference(new Date(),new Date(track.get('date')));
+    for (const track of habit.get("tracking")) {
+      const dayDifference = calculateDayDifference(
+        new Date(),
+        new Date(track.get("date"))
+      );
       if (dayDifference === 0) {
-          disabled = true;
-          break;
+        disabled = true;
+        break;
       }
     }
     return disabled;
-  }
+  };
 
   return (
     <main>
@@ -114,9 +131,17 @@ export default function HomePage() {
                   <div className="w-12 lg:w-12">
                     {!habit.get("isArchieved") ? (
                       <AppLoaderButton
+                        loading={
+                          actionArchive &&
+                          actionArchive.get("status") === "PENDING" &&
+                          selectedHabit &&
+                          selectedHabit.get("_id") == habit.get("_id")
+                            ? true
+                            : false
+                        }
                         disabled={isHabitDisabled(habit)}
                         onClick={(e: any) => completeTheHabit(e, habit)}
-                        //actionType={"ARCHIVE_HABIT"}
+                        //actionType={""}
                         label="Done for today?"
                       />
                     ) : null}
@@ -132,6 +157,14 @@ export default function HomePage() {
                           borderRadius: 8,
                           height: "30px",
                         }}
+                        loading={
+                          actionArchive &&
+                          actionArchive.get("status") === "PENDING" &&
+                          selectedHabit &&
+                          selectedHabit.get("_id") == habit.get("_id")
+                            ? true
+                            : false
+                        }
                         onClick={(e: any) => archiveTheHabit(e, habit)}
                         //actionType={"ARCHIVE_HABIT"}
                         label="Archive"
