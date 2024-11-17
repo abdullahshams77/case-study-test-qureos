@@ -1,4 +1,6 @@
+import AppDropdown from "@/components/common/app.dropdown/app.dropdown";
 import AppLoaderButton from "@/components/common/app.loader.button/app.loader.button";
+import { sortOptions } from "@/components/common/util/util";
 import { Button } from "primereact/button";
 import { InputText } from "primereact/inputtext";
 import { useState } from "react";
@@ -6,14 +8,17 @@ import { useState } from "react";
 export default function HabitFilters(props: any) {
   const [state, setState] = useState({
     title: "",
+    sortBy: ""
   });
   const onChange = (e: any) => {
     setState({ ...state, title: e?.target?.value });
   };
   const onSearch = () => {
-    props.onSearch(state)
+    props.onSearch(state);
   };
-
+  const setSortBy = (value: any) => {
+    setState({ ...state, sortBy: value });
+  };
   return (
     <div
       className="pl-3 pr-3"
@@ -21,31 +26,39 @@ export default function HabitFilters(props: any) {
         background: "#f6f6f6",
       }}
     >
-      <div className="w-8 flex align-items-center">
-        <div className="flex-grow-1 col-12 lg:col-3 xl:col-2 mb-2 lg:mb-0">
-          <div className="w-full mt-0 p-inputgroup border-1 border-gray-200 border-round-xl p-1">
-            <InputText
-              onChange={onChange}
-              type="text"
-              placeholder="Search...."
-              className="search-input border-none"
-            />
-            <Button
-              icon="pi pi-search"
-              className="search-button p-secondary border-none outline-none focus:outline-none focus:shadow-none"
-              style={{ background: "white", color: "gray" }}
-            />
+      <div>
+        <div className="w-8 flex align-items-center">
+          <div className="flex-grow-1 col-12 lg:col-3 xl:col-2 mb-2 lg:mb-0">
+            <div className="w-full mt-0 p-inputgroup border-1 border-gray-200 border-round-xl p-1">
+              <InputText
+                onChange={onChange}
+                type="text"
+                placeholder="Search...."
+                className="search-input border-none"
+              />
+              <Button
+                icon="pi pi-search"
+                className="search-button p-secondary border-none outline-none focus:outline-none focus:shadow-none"
+                style={{ background: "white", color: "gray" }}
+              />
+            </div>
           </div>
+        </div>
+        <div className="w-4 p-1 pl-2">
+          <label className="block font-medium text-900 text-xs mb-1">
+            Sort By
+          </label>
+          <AppDropdown
+            value={state.sortBy}
+            options={sortOptions}
+            onChange={(e: any) => setSortBy(e.value)}
+            placeholder="Sort By"
+          />
         </div>
       </div>
       <div className="flex justify-content-end align-items-end">
         <div className="w-12 lg:w-3 md:w-3">
-          <AppLoaderButton
-            onClick={onSearch}
-            //onClick={}
-            //actionType={"ARCHIVE_HABIT"}
-            label="Search"
-          />
+          <AppLoaderButton onClick={onSearch} label="Search" />
         </div>
       </div>
     </div>
