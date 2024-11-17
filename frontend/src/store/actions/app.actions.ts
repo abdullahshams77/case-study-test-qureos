@@ -16,12 +16,30 @@ export const createUser = createAction('CREATE_USER', (data: any = {},additional
     }
 }));
 
-export const addNewHabit = createAction('ADD_NEW_HABIT', (data: any = {},additionalData:any = {}) => ({
+export const addNewHabit = createAction('ADD_NEW_HABIT', (data: any = {},additionalData:any = {}) => ({ //Should be seperate habit.action, but just for the test created here
     payload: {
         data: data,
         additionalData: {...additionalData, successMessage: "Habit added successfully"},
         url: 'habits',
         method: 'POST'
+    }
+}));
+
+export const archiveHabit = createAction('ARCHIVE_HABIT', (data: any = {},additionalData:any = {}) => ({ //Should be seperate habit.action, but just for the test created here
+    payload: {
+        data: data,
+        additionalData: {...additionalData, successMessage: "Habit archived successfully"},
+        url: `habits/${additionalData.id}/archive`,
+        method: 'POST'
+    }
+}));
+
+export const updateHabit = createAction('UPDATE_HABIT', (data: any = {},additionalData:any = {}) => ({ //Should be seperate habit.action, but just for the test created here
+    payload: {
+        data: data,
+        additionalData: {...additionalData, successMessage: "Habit updated successfully"},
+        url: `habits/${additionalData.id}`,
+        method: 'PUT'
     }
 }));
 
