@@ -16,6 +16,7 @@ const AppBox = (props: any) => {
           <span className="text-sm text-gray-400"></span>
         </div>
       </div>
+      <>{props.children}</>
       <div className="mt-4">{footer ? footer : null}</div>
     </div>
   );

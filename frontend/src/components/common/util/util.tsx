@@ -53,6 +53,12 @@ export const differenceBetweenDatesInMinutes = (
   return diffMins;
 };
 
+export const habitPriorities = [
+  { label: "Low", value: "0" },
+  { label: "Medium", value: "1" },
+  { label: "High", value: "2" },
+];
+
 export function calculateDayDifference(date1: Date, date2: Date): number {
   const normalizedDate1 = new Date(date1.getFullYear(), date1.getMonth(), date1.getDate());
   const normalizedDate2 = new Date(date2.getFullYear(), date2.getMonth(), date2.getDate());

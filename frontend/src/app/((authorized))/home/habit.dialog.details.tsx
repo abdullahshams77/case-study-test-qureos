@@ -3,6 +3,7 @@ import AppDropdown from "@/components/common/app.dropdown/app.dropdown";
 import AppInputTextArea from "@/components/common/app.input.text.area/app.input.text.area";
 import AppInput from "@/components/common/app.input/app.input";
 import AppLoaderButton from "@/components/common/app.loader.button/app.loader.button";
+import { habitPriorities } from "@/components/common/util/util";
 import { addNewHabit, updateHabit } from "@/store/actions/app.actions";
 import { useAppDispatch } from "@/store/store";
 import { useEffect, useState } from "react";
@@ -106,11 +107,7 @@ export default function HabitDialogDetails(props: any) {
       return false;
     }
   };
-  const habitPriority = [
-    { label: "Low", value: "0" },
-    { label: "Medium", value: "1" },
-    { label: "High", value: "2" },
-  ];
+  
   return (
     <div>
       <div className="grid w-12 lg:w-9">
@@ -148,7 +145,7 @@ export default function HabitDialogDetails(props: any) {
           </label>
           <AppDropdown
             value={state.habitPriority}
-            options={habitPriority}
+            options={habitPriorities}
             onChange={(e: any) => setHabitPriority(e.value)}
             placeholder="Select habit priority"
           />

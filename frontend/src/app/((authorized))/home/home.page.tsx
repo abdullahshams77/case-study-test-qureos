@@ -11,7 +11,7 @@ import AppLoaderButton from "@/components/common/app.loader.button/app.loader.bu
 import { useAppDispatch } from "@/store/store";
 import { archiveHabit, completeHabit } from "@/store/actions/app.actions";
 import { useRefToastContext } from "@/app/toast.wrapper";
-import { calculateDayDifference } from "@/components/common/util/util";
+import { calculateDayDifference, habitPriorities } from "@/components/common/util/util";
 
 export default function HomePage() {
   const { data: habitList, isLoading: habitListLoading } = useHabitList({});
@@ -40,8 +40,7 @@ export default function HomePage() {
     appLoaderState &&
     appLoaderState.find(
       (action: any) =>
-        action.get("actionType") == "ARCHIVE_HABIT" ||
-        action.get("actionType") == "COMPLETE_HABIT"
+        action.get("actionType") == "ARCHIVE_HABIT"
     );
   const actionComplete: any =
     appLoaderState &&
@@ -124,6 +123,7 @@ export default function HomePage() {
         {habitList &&
           habitList.get("data") &&
           habitList.get("data").map((habit: any, index: any) => {
+            const priority:any = habitPriorities.find((priority)=>priority.value== habit.get('priority'))
             return (
               <AppBox
                 key={index}
@@ -132,8 +132,8 @@ export default function HomePage() {
                     {!habit.get("isArchieved") ? (
                       <AppLoaderButton
                         loading={
-                          actionArchive &&
-                          actionArchive.get("status") === "PENDING" &&
+                          actionComplete &&
+                          actionComplete.get("status") === "PENDING" &&
                           selectedHabit &&
                           selectedHabit.get("_id") == habit.get("_id")
                             ? true
@@ -176,7 +176,16 @@ export default function HomePage() {
                 description={habit.get("goal")}
                 heading={habit.get("title")}
                 //value={data.value}
-              />
+              >
+                <div>
+                  <div>
+                    {`Streak: ${habit.get('streak')}`}
+                  </div>
+                  <div>
+                    {`Priority: ${priority && priority.label}`}
+                  </div>
+                </div>
+                </AppBox>
             );
           })}
       </GridTemplate>
