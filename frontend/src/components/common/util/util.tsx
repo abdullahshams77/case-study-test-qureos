@@ -53,3 +53,10 @@ export const differenceBetweenDatesInMinutes = (
   return diffMins;
 };
 
+export function calculateDayDifference(date1: Date, date2: Date): number {
+  const normalizedDate1 = new Date(date1.getFullYear(), date1.getMonth(), date1.getDate());
+  const normalizedDate2 = new Date(date2.getFullYear(), date2.getMonth(), date2.getDate());
+  
+  return Math.floor((normalizedDate1.getTime() - normalizedDate2.getTime()) / (1000 * 3600 * 24));
+}
+

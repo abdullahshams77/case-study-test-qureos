@@ -34,6 +34,15 @@ export const archiveHabit = createAction('ARCHIVE_HABIT', (data: any = {},additi
     }
 }));
 
+export const completeHabit = createAction('COMPLETE_HABIT', (data: any = {},additionalData:any = {}) => ({ //Should be seperate habit.action, but just for the test created here
+    payload: {
+        data: data,
+        additionalData: {...additionalData, successMessage: "Habit completed successfully"},
+        url: `habits/${additionalData.id}/completeHabitForDay`,
+        method: 'POST'
+    }
+}));
+
 export const updateHabit = createAction('UPDATE_HABIT', (data: any = {},additionalData:any = {}) => ({ //Should be seperate habit.action, but just for the test created here
     payload: {
         data: data,

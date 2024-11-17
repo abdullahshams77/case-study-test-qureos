@@ -9,8 +9,9 @@ import { appLoaderStatusSelector } from "@/store/selectors/app.selectors";
 import AppSpinner from "@/components/common/app.spinner/app.spinner";
 import AppLoaderButton from "@/components/common/app.loader.button/app.loader.button";
 import { useAppDispatch } from "@/store/store";
-import { archiveHabit } from "@/store/actions/app.actions";
+import { archiveHabit, completeHabit } from "@/store/actions/app.actions";
 import { useRefToastContext } from "@/app/toast.wrapper";
+import { calculateDayDifference } from "@/components/common/util/util";
 
 export default function HomePage() {
   const { data: habitList, isLoading: habitListLoading } = useHabitList({});
@@ -45,12 +46,11 @@ export default function HomePage() {
     setShowHabitDialog(true);
     setSelectedHabit(habit);
   };
-  const archiveTheHabit = (e:any,habit:any) => {
+  const archiveTheHabit = (e: any, habit: any) => {
     e.stopPropagation();
     dispatch(
       archiveHabit(
-        {
-        },
+        {},
         {
           id: habit && habit.get("_id"),
           appToastRef,
@@ -64,6 +64,35 @@ export default function HomePage() {
       )
     );
   };
+  const completeTheHabit = (e: any, habit: any) => {
+    e.stopPropagation();
+    dispatch(
+      completeHabit(
+        {},
+        {
+          id: habit && habit.get("_id"),
+          appToastRef,
+          mutationKeys: [
+            {
+              key: "habits",
+              params: {},
+            },
+          ],
+        }
+      )
+    );
+  };
+  const isHabitDisabled = (habit:any) => {
+    let disabled = false;
+    for (const track of habit.get('tracking')) {
+      const dayDifference = calculateDayDifference(new Date(),new Date(track.get('date')));
+      if (dayDifference === 0) {
+          disabled = true;
+          break;
+      }
+    }
+    return disabled;
+  }
 
   return (
     <main>
@@ -80,6 +109,18 @@ export default function HomePage() {
             return (
               <AppBox
                 key={index}
+                footer={
+                  <div className="w-12 lg:w-12">
+                    {!habit.get("isArchieved") ? (
+                      <AppLoaderButton
+                        disabled={isHabitDisabled(habit)}
+                        onClick={(e: any) => completeTheHabit(e, habit)}
+                        //actionType={"ARCHIVE_HABIT"}
+                        label="Done for today?"
+                      />
+                    ) : null}
+                  </div>
+                }
                 header={
                   <div className="w-12 lg:w-5">
                     {!habit.get("isArchieved") ? (
@@ -90,7 +131,7 @@ export default function HomePage() {
                           borderRadius: 8,
                           height: "30px",
                         }}
-                        onClick={(e:any)=>archiveTheHabit(e,habit)}
+                        onClick={(e: any) => archiveTheHabit(e, habit)}
                         //actionType={"ARCHIVE_HABIT"}
                         label="Archive"
                       />
