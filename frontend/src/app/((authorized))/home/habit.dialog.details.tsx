@@ -15,7 +15,7 @@ const habitSchema = z.object({
 });
 
 export default function HabitDialogDetails(props: any) {
-  const { selectedHabit } = props;
+  const { selectedHabit, filters } = props;
   const [state, setState] = useState({
     habitTitle: "",
     habitGoal: "",
@@ -50,50 +50,49 @@ export default function HabitDialogDetails(props: any) {
         habitTitle: state.habitTitle,
         habitGoal: state.habitGoal,
       });
-      if(selectedHabit) {
+      if (selectedHabit) {
         dispatch(
-            updateHabit(
-              {
-                title: state.habitTitle,
-                details: state.habitDescription,
-                priority: state.habitPriority,
-                goal: state.habitGoal,
-              },
-              {
-                id: selectedHabit && selectedHabit.get("_id"),
-                appToastRef,
-                mutationKeys: [
-                  {
-                    key: "habits",
-                    params: {},
-                  },
-                ],
-              }
-            )
-          );
-      }
-      else {
+          updateHabit(
+            {
+              title: state.habitTitle,
+              details: state.habitDescription,
+              priority: state.habitPriority,
+              goal: state.habitGoal,
+            },
+            {
+              id: selectedHabit && selectedHabit.get("_id"),
+              appToastRef,
+              mutationKeys: [
+                {
+                  key: "habits",
+                  params: filters,
+                },
+              ],
+            }
+          )
+        );
+      } else {
         dispatch(
-            addNewHabit(
-              {
-                title: state.habitTitle,
-                details: state.habitDescription,
-                priority: state.habitPriority,
-                goal: state.habitGoal,
-              },
-              {
-                appToastRef,
-                mutationKeys: [
-                  {
-                    key: "habits",
-                    params: {},
-                  },
-                ],
-              }
-            )
-          );
+          addNewHabit(
+            {
+              title: state.habitTitle,
+              details: state.habitDescription,
+              priority: state.habitPriority,
+              goal: state.habitGoal,
+            },
+            {
+              appToastRef,
+              mutationKeys: [
+                {
+                  key: "habits",
+                  params: filters,
+                },
+              ],
+            }
+          )
+        );
       }
-      
+
       setErrors({});
     } catch (error) {
       if (error instanceof z.ZodError) {
@@ -107,7 +106,7 @@ export default function HabitDialogDetails(props: any) {
       return false;
     }
   };
-  
+
   return (
     <div>
       <div className="grid w-12 lg:w-9">
@@ -166,7 +165,7 @@ export default function HabitDialogDetails(props: any) {
         <div className="mt-3">
           <AppLoaderButton
             onClick={saveHabit}
-            actionType={["ADD_NEW_HABIT","UPDATE_HABIT"]}
+            actionType={["ADD_NEW_HABIT", "UPDATE_HABIT"]}
             label="Save"
           />
         </div>
