@@ -7,25 +7,32 @@ import { useEffect, useState } from "react";
 import HabitDialogDetails from "./habit.dialog.details";
 import { appLoaderStatusSelector } from "@/store/selectors/app.selectors";
 import AppSpinner from "@/components/common/app.spinner/app.spinner";
+import AppLoaderButton from "@/components/common/app.loader.button/app.loader.button";
+import { useAppDispatch } from "@/store/store";
+import { archiveHabit } from "@/store/actions/app.actions";
+import { useRefToastContext } from "@/app/toast.wrapper";
 
 export default function HomePage() {
   const { data: habitList, isLoading: habitListLoading } = useHabitList({});
   const [showHabitDialog, setShowHabitDialog] = useState(false);
-  const[selectedHabit,setSelectedHabit] = useState("");
+  const [selectedHabit, setSelectedHabit] = useState<any>("");
+  const appToastRef = useRefToastContext();
   const onAddNewHabit = () => {
-    setSelectedHabit("")
+    setSelectedHabit("");
     setShowHabitDialog(true);
   };
   const hideHabitDialog = () => {
-    setSelectedHabit("")
+    setSelectedHabit("");
     setShowHabitDialog(false);
   };
+  const dispatch = useAppDispatch();
   const appLoaderState: any = appLoaderStatusSelector();
   const action: any =
     appLoaderState &&
     appLoaderState.find(
-      (action: any) => action.get("actionType") == "ADD_NEW_HABIT" ||
-      action.get("actionType") == "UPDATE_HABIT"
+      (action: any) =>
+        action.get("actionType") == "ADD_NEW_HABIT" ||
+        action.get("actionType") == "UPDATE_HABIT"
     );
 
   useEffect(() => {
@@ -34,14 +41,32 @@ export default function HomePage() {
     }
   }, [action]);
 
-  const onEditHabit = (habit:any) => {
+  const onEditHabit = (habit: any) => {
     setShowHabitDialog(true);
-    setSelectedHabit(habit)
-  }
- 
+    setSelectedHabit(habit);
+  };
+  const archiveTheHabit = (e:any,habit:any) => {
+    e.stopPropagation();
+    dispatch(
+      archiveHabit(
+        {
+        },
+        {
+          id: habit && habit.get("_id"),
+          appToastRef,
+          mutationKeys: [
+            {
+              key: "habits",
+              params: {},
+            },
+          ],
+        }
+      )
+    );
+  };
+
   return (
     <main>
-      {habitListLoading ? <AppSpinner /> : null}
       <GridTemplate>
         <AppBox
           onClick={onAddNewHabit}
@@ -55,7 +80,24 @@ export default function HomePage() {
             return (
               <AppBox
                 key={index}
-                onClick={()=>onEditHabit(habit)}
+                header={
+                  <div className="w-12 lg:w-5">
+                    {!habit.get("isArchieved") ? (
+                      <AppLoaderButton
+                        style={{
+                          backgroundColor: "var(--bluegray-100)",
+                          color: "var(--surface-600)",
+                          borderRadius: 8,
+                          height: "30px",
+                        }}
+                        onClick={(e:any)=>archiveTheHabit(e,habit)}
+                        //actionType={"ARCHIVE_HABIT"}
+                        label="Archive"
+                      />
+                    ) : null}
+                  </div>
+                }
+                onClick={() => onEditHabit(habit)}
                 description={habit.get("goal")}
                 heading={habit.get("title")}
                 //value={data.value}
@@ -65,13 +107,14 @@ export default function HomePage() {
       </GridTemplate>
       {showHabitDialog === true ? (
         <AppDialog
-          header={selectedHabit ? "Edit Habit": "Add New Habit"}
+          header={selectedHabit ? "Edit Habit" : "Add New Habit"}
           visible={showHabitDialog}
           onHide={hideHabitDialog}
         >
           <HabitDialogDetails selectedHabit={selectedHabit} />
         </AppDialog>
       ) : null}
+      {habitListLoading ? <AppSpinner /> : null}
     </main>
   );
 }

@@ -30,7 +30,7 @@ export const archiveHabit = createAction('ARCHIVE_HABIT', (data: any = {},additi
         data: data,
         additionalData: {...additionalData, successMessage: "Habit archived successfully"},
         url: `habits/${additionalData.id}/archive`,
-        method: 'POST'
+        method: 'PUT'
     }
 }));
 
