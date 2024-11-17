@@ -2,7 +2,6 @@
 import { useHabitList } from "@/app/hooks/fetch/app";
 import AppBox from "@/components/common/app.box/app.box";
 import AppDialog from "@/components/common/app.dialog/app.dialog";
-import GridTemplate from "@/components/common/templates/grid.template/grid.template";
 import { useEffect, useState } from "react";
 import HabitDialogDetails from "./habit.dialog.details";
 import { appLoaderStatusSelector } from "@/store/selectors/app.selectors";
@@ -16,10 +15,12 @@ import {
   habitPriorities,
 } from "@/components/common/util/util";
 import { TabMenu } from "primereact/tabmenu";
+import HabitFilters from "./habit.filters";
 
 export default function HomePage() {
   const [showHabitDialog, setShowHabitDialog] = useState(false);
   const [selectedHabit, setSelectedHabit] = useState<any>("");
+  const [habitFilters, setHabitFilters] = useState({});
   const appToastRef = useRefToastContext();
   const onAddNewHabit = () => {
     setSelectedHabit("");
@@ -31,9 +32,13 @@ export default function HomePage() {
   };
   const [selectedTab, setSelectedTab] = useState(0);
   const tabs = [{ label: "Active Habits" }, { label: "Archived Habits" }];
-  //We should seperate filter  component
+
+  const onSearch = (filters: any) => {
+    setHabitFilters(filters);
+  };
 
   let filters = {
+    ...habitFilters,
     isArchived: selectedTab == 0 ? false : true,
   };
   const { data: habitList, isLoading: habitListLoading } =
@@ -121,6 +126,10 @@ export default function HomePage() {
     }
     return disabled;
   };
+  const onTabChange = (e: any) => {
+    setSelectedTab(e.index);
+    setHabitFilters({})
+  };
 
   return (
     <main>
@@ -128,8 +137,11 @@ export default function HomePage() {
         <TabMenu
           model={tabs}
           activeIndex={selectedTab}
-          onTabChange={(e) => setSelectedTab(e.index)}
+          onTabChange={onTabChange}
         />
+      </div>
+      <div className="mb-3">
+        <HabitFilters onSearch={onSearch} />
       </div>
       <div className="grid">
         {selectedTab == 0 ? (
